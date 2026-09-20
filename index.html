@@ -498,15 +498,15 @@
         <div class="vip-msg" id="vipMsg"></div>
         <!-- 微信内置浏览器连不上中台（网关按 UA 拦）时出现的操作指引 -->
         <div class="vip-wx" id="vipWx" style="display:none">
-            <div class="vip-wx-t">⚠️ 微信内置浏览器连不上激活服务</div>
-            <div class="vip-wx-s">这不是激活码的问题。微信会拦住会员服务的请求，请任选一种方式激活：</div>
-            <div class="vip-wx-s">① 点右上角 <b>···</b> → 选「<b>在浏览器打开</b>」，再输入激活码</div>
-            <div class="vip-wx-s">② 复制本页链接，用手机浏览器或电脑 Chrome 打开</div>
+            <div class="vip-wx-t">⚠️ 微信里激活不了，请改用浏览器打开</div>
+            <div class="vip-wx-s">这不是激活码的问题：<b>微信会拦掉会员服务的请求</b>，所以微信内置浏览器连不上激活服务。</div>
+            <div class="vip-wx-s">① 点右上角 <b>···</b> → 选「<b>在浏览器打开</b>」，在打开的浏览器里输入激活码</div>
+            <div class="vip-wx-s">② 或点下面的按钮复制链接，再用手机浏览器 / 电脑 Chrome 打开</div>
             <div class="vip-wx-acts">
                 <button class="btn-gray" onclick="copyPageLink()">📋 复制本页链接</button>
-                <button class="btn-gray" onclick="recheckMember()">✅ 我已激活，重新检测</button>
+                <button class="btn-gray" onclick="recheckMember()">🔄 重新检测激活状态</button>
             </div>
-            <div class="vip-wx-s vip-wx-note">在浏览器里激活成功后，本设备即可正常使用（<b>一码一机</b>，换设备需重新激活）。</div>
+            <div class="vip-wx-s vip-wx-note">激活信息存在<b>浏览器本地</b>：在浏览器里激活，就在浏览器里玩。微信和浏览器是两套独立存储，来回切换<b>不会互通</b>，这不是故障。</div>
         </div>
         <div class="vip-acts">
             <button class="btn-orange" id="vipSubmitBtn" onclick="submitVipCode()">立即激活</button>
@@ -514,7 +514,7 @@
         </div>
         <div class="vip-feats">
             <div>👑 开通后解锁：教材同步题库全部 <b>1345</b> 题（41 个课时）</div>
-            <div>🔁 一码一用，各系统的码互不通用；换设备后用同一码重新激活即可</div>
+            <div>🔁 一码一用，各系统的码互不通用；激活与浏览器绑定，换设备 / 换浏览器需重新激活</div>
             <div>⏳ 会员到期后自动锁定、无法答题，续期后立即恢复</div>
         </div>
     </div>
@@ -1968,7 +1968,7 @@ const HUB_BASE = 'https://hjy3-member-hub.app.workbuddy.host/';
 //   留空 = 未部署：微信内引导家长改用浏览器打开激活，其他环境不受影响。
 const RELAY_BASE = '';
 // 版本号：家长/老师据此确认"手上这份是不是最新版"。改代码后请同步更新这一行。
-const APP_VERSION = 'v1.2 · 2026-09-20';
+const APP_VERSION = 'v1.3 · 2026-09-20';
 // 是否微信内置浏览器（决定核销通道顺序与离线宽限时长）
 const IS_WX = (function() {
     try { return /MicroMessenger/i.test(navigator.userAgent || ''); } catch(e) { return false; }
@@ -2372,6 +2372,12 @@ function copyPageLink() {
 // 家长在外部浏览器激活完，可回到微信这页点一下重检（同内核才共享 localStorage）
 function recheckMember() {
     var msg = document.getElementById('vipMsg');
+    // 微信内核 + 未配中继：复验必然连不上，别甩给家长一句自相矛盾的"请先联网激活会员"
+    if(IS_WX && !RELAY_BASE) {
+        if(msg) { msg.className = 'vip-msg err'; msg.textContent = '❌ 微信里连不上激活服务，请按上方指引改用浏览器打开'; }
+        showWxGuide(true);
+        return;
+    }
     if(msg) { msg.className = 'vip-msg'; msg.textContent = '正在重新检测会员状态…'; }
     verifyToken(true).then(function(r) {
         if(r.ok) {
