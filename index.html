@@ -2199,6 +2199,12 @@ function redeemOnce(channel, code, fp) {
 function redeemCode(raw) {
     var code = String(raw || '').trim();
     if(!code) return Promise.resolve({ ok: false, msg: '请输入激活码' });
+    // 微信内核且没配中继 ⇒ 网络必然打不通（网关按 UA 拦）。
+    // 与 verifyToken 保持同一判据：别硬发 2~3 个注定 403 的请求让家长干等，直接给可操作的引导。
+    if(IS_WX && !RELAY_BASE) {
+        return Promise.resolve({ ok: false, wechat: true,
+            msg: '微信内置浏览器无法连接激活服务，请按下方指引改用浏览器打开' });
+    }
     var norm = code.replace(/[\s\-]/g, '').toUpperCase();
     var tries = (norm !== code) ? [code, norm] : [code];   // 兼容带/不带连字符两种录入
     var fp = deviceFp();
