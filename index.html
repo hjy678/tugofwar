@@ -91,7 +91,7 @@
         .timer-bar.warning { background: #ffa502; }
         .timer-bar.danger { background: var(--team-a); }
 
-        /* 拔河场景 - 图片背景 */
+        /* 拔河场景 - 图片背��� */
         .tug-scene { flex: 1; min-height: 150px; position: relative; overflow: hidden; background: #2f3542; }
         /* 可移动的场景图片层 */
         .scene-bg { position: absolute; top: 0; left: -7%; width: 114%; height: 100%; object-fit: cover; object-position: center 42%; transition: transform 1s cubic-bezier(.34,1.56,.64,1); z-index: 0; user-select: none; -webkit-user-drag: none; pointer-events: none; }
@@ -104,7 +104,7 @@
         /* 中线标记 */
         .center-mark { position: absolute; left: 50%; top: 10%; bottom: 10%; transform: translateX(-50%); width: 4px; background: repeating-linear-gradient(180deg, rgba(255,255,255,.7) 0, rgba(255,255,255,.7) 12px, transparent 12px, transparent 24px); z-index: 2; pointer-events: none; border-radius: 2px; }
 
-        /* 终点红线：与白色中线同向的竖向虚线，分列中线两侧；位置由 winScore 动态计算（layoutFinishLines） */
+        /* 终点红线：与白色中线同向的竖向虚线，分列中线��侧；位置由 winScore 动态计算（layoutFinishLines） */
         .finish-line { position: absolute; top: 10%; bottom: 10%; width: 0; border-left: 5px dashed #ff4757; box-shadow: 0 0 10px rgba(255,71,87,.55); z-index: 2; pointer-events: none; }
         /* 下面两个 left 只是首帧缺省值，实际位置由 layoutFinishLines() 按 winScore 计算 */
         .finish-left { left: 43.7%; }
@@ -407,7 +407,7 @@
             </div>
         </div>
         <div style="margin-bottom:20px">
-            <label style="font-size:16px;font-weight:600;display:block;margin-bottom:8px">🏆 获胜条件</label>
+            <label style="font-size:16px;font-weight:600;display:block;margin-bottom:8px">🏆 获胜条��</label>
             <div style="display:flex;align-items:center;gap:8px">
                 <input type="number" id="setWin" value="5" min="1" max="20" style="width:100px;padding:10px 14px;border:2px solid #dfe4ea;border-radius:12px;font-size:18px;text-align:center;outline:none;transition:border-color .2s" onfocus="this.style.borderColor='#2ed573'" onblur="this.style.borderColor='#dfe4ea'">
                 <span style="color:#747d8c;font-size:15px">净胜题数（把绳拉过红线所需步数，1-20）</span>
@@ -506,7 +506,7 @@
                 <button class="btn-gray" onclick="copyPageLink()">📋 复制本页链接</button>
                 <button class="btn-gray" onclick="recheckMember()">🔄 重新检测激活状态</button>
             </div>
-            <div class="vip-wx-s vip-wx-note">激活信息存在<b>浏览器本地</b>：在浏览器里激活，就在浏览器里玩。微信和浏览器是两套独立存储，来回切换<b>不会互通</b>，这不是故障。</div>
+            <div class="vip-wx-s vip-wx-note">激活信息存在<b>浏览器本地</b>：在浏览器里激活，就在浏览器里玩。微信和浏���器是两套独立存储，来回切换<b>不会互通</b>，这不是故障。</div>
         </div>
         <div class="vip-acts">
             <button class="btn-orange" id="vipSubmitBtn" onclick="submitVipCode()">立即激活</button>
@@ -759,7 +759,7 @@ function setCenterStatus(text, cls) {
 // 胜负判定：净胜题数（= 绳结从原中点被拉开的步数）达到 winScore 即为“过线获胜”
 //   位移 = (净胜题数 / winScore) × ROPE_TRAVEL
 // 因此终点红线不能再写死，必须由 winScore 反推：红线落在“差半题就过线”的位置，
-// 这样三角旗“压过红线”的那一题，正好就是决出胜负的那一题（对任意 winScore 都成立）。
+// 这样三角旗“压过红线”的那一题，正好就是决出胜负的那��题（对任意 winScore 都成立）。
 var ROPE_TRAVEL = 7;
 function layoutFinishLines() {
     var off = winScore > 0 ? ROPE_TRAVEL * (winScore - 0.5) / winScore : ROPE_TRAVEL;
@@ -976,7 +976,7 @@ function bankEmptyGuard() {
     var qt = document.getElementById('qText');
     if(qt) qt.textContent = isMember()
         ? '当前题库暂无题目：请在顶部「📘同步题库」里选好课时，或导入自己的题库'
-        : '🔒 未激活：全部题库已锁定，请输入激活码解锁';
+        : '🔒 未激活：全部题库已锁定，请输入激活码解���';
     var qc = document.getElementById('qCategory');
     if(qc) qc.textContent = isMember() ? '题库为空' : '未激活';
     var qp = document.getElementById('qProgress');
@@ -1164,7 +1164,7 @@ function selectAnswer(team, idx) {
             // 抢答模式：答错给对手加分
             showMessage('回答错误！', 'wrong', explOf(q), 1800);
         } else if(mode === 'turn') {
-            // 轮流模式：答错不扣分、绳不动，仅连胜清零
+            // 轮流模式��答错不扣分、绳不动，仅连胜清零
             showMessage('回答错误，本题作废！', 'wrong', explOf(q), 1800);
             streaks[team] = 0;
             var el = document.getElementById('streak' + team);
@@ -1261,7 +1261,7 @@ function playAgain() {
 }
 
 // 胜利弹窗“退出本局”：彻底结束本场并回到待机状态。
-// 目的：不想再来一局时能干净退出，之后可到顶部“教材同步题库”换课时/换章节，
+// 目的：不想再来一局时能干净���出，之后可到顶部“教材同步题库”换课时/换章节，
 // 也可切换答题模式（轮流 / 抢答 / 同时）后重新开始。
 function exitGame() {
     closeModal('winModal');
@@ -1969,7 +1969,7 @@ const HUB_BASE = 'https://hjy3-member-hub.app.workbuddy.host/';
 // ⇒ 部署一个「服务端中继」后把地址填到这里，微信内就能正常激活与校验。
 //   中继源码与部署步骤见包内 _relay/（腾讯云 CloudBase 云函数 或 Cloudflare Worker）。
 //   留空 = 未部署：微信内引导家长改用浏览器打开激活，其他环境不受影响。
-const RELAY_BASE = '';
+const RELAY_BASE = 'https://hjy-apps-d5g16nx4y5a5a7fb6-1492786962.ap-shanghai.app.tcloudbase.com/relay/';  // CloudBase 服务端中继（路径制：本基址 + api/redeem|verify）
 // 版本号：家长/老师据此确认"手上这份是不是最新版"。改代码后请同步更新这一行。
 const APP_VERSION = 'v1.4 · 2026-09-20';
 // 是否微信内置浏览器（决定核销通道顺序与离线宽限时长）
@@ -2172,7 +2172,7 @@ function setBankControlsEnabled(on) {
 }
 var bankDegraded = false;
 // ---- 核销通道 ----
-// 三条通道指向同一个中台、同一份码库，一码一用语义完全一致：
+// 三条通道指向同一个中台��同一份码库，一码一用语义完全一致：
 //   ① relay  服务端中继（RELAY_BASE）—— 微信内核下唯一走得通的通道
 //   ② direct 直连中台（HUB_BASE）—— 除微信内核外的所有环境
 //   ③ same   同源相对路径 —— 页面与中台同域时可用（本地联调）
@@ -2189,8 +2189,8 @@ var REDEEM_FATAL = { not_found: 1, void: 1, already_used: 1, blacklisted: 1, wro
 function redeemOnce(channel, code, fp) {
     var body = JSON.stringify({ code: code, fp: fp, system: MEMBER_SYSTEM });
     if(channel === 'relay') {
-        return hubFetch(RELAY_BASE, { method: 'POST', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ op: 'redeem', code: code, fp: fp, system: MEMBER_SYSTEM }) })
+        return hubFetch(RELAY_BASE + 'api/redeem', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ code: code, fp: fp, system: MEMBER_SYSTEM }) })
             .then(function(r) { return r.json(); });
     }
     if(channel === 'same') {
@@ -2236,7 +2236,7 @@ function redeemCode(raw) {
                 return { ok: false, reason: r.reason, msg: (r.msg || '激活码无效，请检查后重试') };
             }
             return { ok: false, reason: (r && r.reason) || 'bad_response',
-                     msg: (r && r.msg) ? r.msg : '激活失败，请稍后重试' };
+                     msg: (r && r.msg) ? r.msg : '激活失败���请稍后重试' };
         }).catch(function() {
             ti = 0; return nextChannel();   // 网络/环境失败才换通道
         });
@@ -2254,7 +2254,7 @@ function verifyChannelList() {
 function verifyOnce(channel, tk, fp) {
     var qs = 'token=' + encodeURIComponent(tk) + '&fp=' + encodeURIComponent(fp) +
              '&system=' + encodeURIComponent(MEMBER_SYSTEM);
-    var url = channel === 'relay' ? (RELAY_BASE + (RELAY_BASE.indexOf('?') >= 0 ? '&' : '?') + 'op=verify&' + qs)
+    var url = channel === 'relay' ? (RELAY_BASE + 'api/verify?' + qs)
             : channel === 'same' ? ('api/verify?' + qs)
             : (HUB_BASE + 'api/verify?' + qs);
     return hubFetch(url, { method: 'GET' }).then(function(r) { return r.json(); });
@@ -2265,7 +2265,7 @@ function verifyToken(force) {
     var tk = getToken();
     var m = getMember() || {};
     if(!tk) return Promise.resolve({ ok: false, reason: 'no_token' });
-    // 缓存通道：必须 verified===true 且 tokenSig 与当前令牌一致，才认这份缓存
+    // 缓存通道���必须 verified===true 且 tokenSig 与当前令牌一致，才认这份缓存
     if(!force && m.verifyAt && m.verified === true && m.tokenSig && m.tokenSig === tokSig(tk) &&
        (Date.now() - m.verifyAt) < ACT_TTL) {
         return Promise.resolve({ ok: true, cached: true, level: m.level, expireAt: m.expireAt });
@@ -2286,7 +2286,7 @@ function verifyToken(force) {
                 return { ok: true, level: r.level, expireAt: r.expireAt, channel: channels[ci] };
             }
             if(r && r.ok === false && r.reason) {
-                clearMember();   // 服务端明确否决（拉黑/作废/过期/换机）→ 立即失效
+                clearMember();   // 服务端明确否决（拉黑/作废/过期/换机��→ 立即失效
                 return { ok: false, reason: r.reason, msg: r.msg || '' };
             }
             ci++; return net();
@@ -2433,7 +2433,7 @@ function submitVipCode() {
     });
 }
 
-// 启动：先确定会员态（向中台复验令牌）→ 装载对应题库 → 初始化界面
+// 启动：先确定会员态（向中台复验���牌）→ 装载对应题库 → 初始化界面
 // 门禁状态同步：题库控件可用性 + 状态条 + 待机文案
 function refreshMemberGate() {
     var on = isMember();
