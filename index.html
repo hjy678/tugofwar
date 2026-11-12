@@ -1964,6 +1964,16 @@ function resetScores() {
 //   GET  api/verify?token=&fp=&system=   → {ok:true, level, expireAt} / {ok:false, reason}
 //   GET  api/trial?fp=                   → {ok:true, used, remaining}（本产品未使用次数限制）
 const HUB_BASE = 'https://hjy3-member-hub.app.workbuddy.host/';
+
+  // [HUB-SC 2026-11-12] 网关新增 sharecode 门槛：直连中台的 URL 自动附加，中继/同源/第三方原样放行
+  var HUB_SHARECODE = 'LOFWNWWOVH';
+  function hubSc(u) {
+    u = String(u);
+    if (u.indexOf('hjy3-member-hub.app.workbuddy.host') < 0) return u;
+    if (u.indexOf('sharecode=') >= 0) return u;
+    return u + (u.indexOf('?') >= 0 ? '&' : '?') + 'sharecode=' + HUB_SHARECODE;
+  }
+
 // 微信内置浏览器无法直连中台（CloudStudio 网关按 UA 拦，微信内核里改不了 UA；
 // 实测 fetch/XHR 伪造 User-Agent 会被浏览器当「禁止头」丢弃，所以前端绕不过去）。
 // ⇒ 部署一个「服务端中继」后把地址填到这里，微信内就能正常激活与校验。
@@ -2040,7 +2050,7 @@ function deviceFp() {
 // 统一出口：旧环境无 fetch 时给出可读的失败，而不是抛错中断整页脚本
 function hubFetch(url, opts) {
     if(typeof fetch !== 'function') return Promise.reject(new Error('当前环境不支持 fetch'));
-    return fetch(url, opts);
+    return fetch(hubSc(url), opts);
 }
 function getMember() { try { return JSON.parse(localStorage.getItem(MEMBER_STORE_KEY) || 'null'); } catch(e) { return null; } }
 function getToken() { var m = getMember(); return (m && m.token) ? m.token : ''; }
